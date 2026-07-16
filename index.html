@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水色灯塔 // AQUAMARINE BEACON</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           基础重置
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f5f3f0;
+            --bg-dark: #1a1a1a;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --text-muted: #999;
+            --text-dim: #ccc;
+            --border: #e0ddd8;
+            --accent: #2a6b6b;
+            --font-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+            --font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        ::selection {
+            background: rgba(42, 107, 107, 0.15);
+        }
+
+        /* ============================================
+           导航
+           ============================================ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(245, 243, 240, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 1px 0 var(--border);
+        }
+
+        .nav-brand {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: var(--text-light);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--text);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 20px;
+            height: 1px;
+            background: var(--text);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* ============================================
+           Hero
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 48px 80px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .hero-subtitle {
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .hero-year {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--text-light);
+            letter-spacing: 0.1em;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-scroll span {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            writing-mode: vertical-rl;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--text-dim), transparent);
+        }
+
+        /* ============================================
+           Section 通用
+           ============================================ */
+        section {
+            padding: 100px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+        }
+
+        .section-date {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .section-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        .section-desc + .section-desc {
+            margin-top: 4px;
+        }
+
+        .film-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-top: 16px;
+            padding: 4px 14px;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 2px;
+        }
+
+        /* ============================================
+           About
+           ============================================ */
+        .about-section {
+            background: #fff;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            max-width: 100%;
+        }
+
+        .about-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: 0.08em;
+        }
+
+        .about-text p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            font-weight: 300;
+        }
+
+        .about-contact {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .about-contact p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .about-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: grayscale(20%);
+            transition: filter 0.6s ease;
+        }
+
+        .about-image:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* ============================================
+           Gallery Grid
+           ============================================ */
+        /* ============================================
+           Gallery Carousel (横向轮播)
+           ============================================ */
+        .gallery-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 12px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .gallery-item {
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: #eee;
+        }
+
+        .gallery-item.portrait {
+            width: 320px;
+            height: 440px;
+        }
+
+        .gallery-item.landscape {
+            width: 620px;
+            height: 440px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease, opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .gallery-item img.loaded {
+            opacity: 1;
+        }
+
+        .gallery-item:hover img.loaded {
+            transform: scale(1.02);
+        }
+
+        /* Loading placeholder */
+        .gallery-item.loading::before {
+            content: 'RESOLVING';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--text-dim);
+            animation: pulse 2s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .gallery-item.loaded::before {
+            display: none;
+        }
+
+        /* 轮播箭头 */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(245, 243, 240, 0.95);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+            line-height: 1;
+        }
+
+        .carousel-arrow:hover {
+            background: #fff;
+            color: var(--text);
+            border-color: var(--text-dim);
+        }
+
+        .carousel-arrow.prev {
+            left: 12px;
+        }
+
+        .carousel-arrow.next {
+            right: 12px;
+        }
+
+        .carousel-arrow.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 指示器 */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .carousel-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: var(--text);
+            width: 20px;
+            border-radius: 3px;
+        }
+
+        /* ============================================
+           Poem Section
+           ============================================ */
+        .poem {
+            max-width: 600px;
+            margin: 40px auto 0;
+            padding: 40px 0;
+        }
+
+        .poem p {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 2.4;
+            margin-bottom: 8px;
+            font-weight: 300;
+        }
+
+        .poem .signature {
+            text-align: right;
+            margin-top: 24px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           Lightbox
+           ============================================ */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(26, 26, 26, 0.96);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox-close:hover { opacity: 1; }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2.5rem;
+            cursor: pointer;
+            opacity: 0.4;
+            padding: 20px;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox-nav:hover { opacity: 0.8; }
+        .lightbox-prev { left: 10px; }
+        .lightbox-next { right: 10px; }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============================================
+           Footer
+           ============================================ */
+        footer {
+            padding: 60px 48px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            background: #fff;
+        }
+
+        footer p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* ============================================
+           Back to Top
+           ============================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        .back-to-top svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ============================================
+           Scroll Reveal
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           Responsive
+           ============================================ */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                flex-direction: column;
+                padding: 20px 24px;
+                gap: 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-links a {
+                padding: 12px 0;
+                font-size: 0.85rem;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            section {
+                padding: 60px 24px;
+            }
+
+            .hero {
+                padding: 100px 24px 60px;
+            }
+
+            .about-inner {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .gallery-item.portrait {
+                width: 260px;
+                height: 360px;
+            }
+
+            .gallery-item.landscape {
+                width: 420px;
+                height: 360px;
+            }
+
+            .carousel-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 1.1rem;
+            }
+
+            .poem {
+                padding: 24px 0;
+            }
+
+            .lightbox-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-item.portrait,
+            .gallery-item.landscape {
+                width: 280px;
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="nav">
+        <a href="#" class="nav-brand">水色灯塔</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">关于</a></li>
+            <li><a href="#uk">英国</a></li>
+            <li><a href="#hokkaido">北海道</a></li>
+            <li><a href="#kyushu">九州</a></li>
+            <li><a href="#yunnan">云南</a></li>
+            <li><a href="#hongkong">香港</a></li>
+            <li><a href="#hangzhou">杭州</a></li>
+            <li><a href="#portrait">人像</a></li>
+            <li><a href="#halfframe">半格</a></li>
+            <li><a href="#waterlight">水色</a></li>
+            <li><a href="#calendar">日历</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <header class="hero">
+        <h1 class="hero-title">水色灯塔</h1>
+        <p class="hero-subtitle">// AQUAMARINE BEACON</p>
+        <p class="hero-year">'025 — '026</p>
+        <div class="hero-scroll">
+            <span>向下滚动</span>
+            <div class="hero-scroll-line"></div>
+        </div>
+    </header>
+
+    <section class="about-section" id="about">
+        <div class="about-inner">
+            <div class="about-text">
+                <p class="section-date">date: PROFILE</p>
+                <h3>水色灯塔</h3>
+                <p>2001年生，现居上海</p>
+                <p>华东师范大学设计专业</p>
+                <p>兼职摄影师 / 胶片爱好者</p>
+                <div class="about-contact">
+                    <p>联系我：826025391@qq.com</p>
+                    <p>WECHAT: summerclearsky</p>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop&crop=face&q=80" alt="摄影师" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section id="uk">
+        <div class="section-header">
+            <p class="section-date">date: 2026</p>
+            <h2 class="section-title">2026 英国</h2>
+            <p class="section-desc">2026.05.01</p>
+            <p class="section-desc">London — Oxford — Windermere — Glasgow — Scottish Highlands — Edinburgh</p>
+            <span class="film-tag">Film Photography</span>
+        </div>
+        <div class="gallery-carousel" data-gallery="uk">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('uk')">&#8249;</button>
+                    <div class="gallery-track" id="track-uk"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('uk')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-uk"></div>
+    </section>
+
+    <section id="hokkaido">
+        <div class="section-header">
+            <p class="section-date">date: 2025</p>
+            <h2 class="section-title">2025 北海道</h2>
+            <p class="section-desc">January 2025, Hokkaido — Sapporo, Otaru, Toyako, Hakodate</p>
+        </div>
+        <div class="gallery-carousel" data-gallery="hokkaido">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('hokkaido')">&#8249;</button>
+                    <div class="gallery-track" id="track-hokkaido"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('hokkaido')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-hokkaido"></div>
+    </section>
+
+    <section id="kyushu">
+        <div class="section-header">
+            <p class="section-date">date: 2025</p>
+            <h2 class="section-title">2025 九州</h2>
+            <p class="section-desc">2025日本九州 福冈-熊本-阿苏</p>
+            <p class="section-desc">Kyushu Japan 2025: Fukuoka - Kumamoto - Aso</p>
+        </div>
+        <div class="gallery-carousel" data-gallery="kyushu">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('kyushu')">&#8249;</button>
+                    <div class="gallery-track" id="track-kyushu"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('kyushu')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-kyushu"></div>
+    </section>
+
+    <section id="yunnan">
+        <div class="section-header">
+            <p class="section-date">date: 2025</p>
+            <h2 class="section-title">2025 云南</h2>
+            <p class="section-desc">2025 captured in Yunnan</p>
+        </div>
+        <div class="gallery-carousel" data-gallery="yunnan">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('yunnan')">&#8249;</button>
+                    <div class="gallery-track" id="track-yunnan"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('yunnan')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-yunnan"></div>
+    </section>
+
+    <section id="hongkong">
+        <div class="section-header">
+            <p class="section-date">date: 2025</p>
+            <h2 class="section-title">2025 香港</h2>
+            <p class="section-desc">2025, shot in Hong Kong</p>
+        </div>
+        <div class="gallery-carousel" data-gallery="hongkong">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('hongkong')">&#8249;</button>
+                    <div class="gallery-track" id="track-hongkong"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('hongkong')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-hongkong"></div>
+    </section>
+
+    <section id="hangzhou">
+        <div class="section-header">
+            <p class="section-date">date: 2026</p>
+            <h2 class="section-title">2026 杭州</h2>
+            <p class="section-desc">2026, captured in Hangzhou</p>
+        </div>
+        <div class="gallery-carousel" data-gallery="hangzhou">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('hangzhou')">&#8249;</button>
+                    <div class="gallery-track" id="track-hangzhou"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('hangzhou')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-hangzhou"></div>
+    </section>
+
+    <section id="portrait">
+        <div class="section-header">
+            <p class="section-date">date: 2025-2026</p>
+            <h2 class="section-title">人像拍摄</h2>
+        </div>
+        <div class="gallery-carousel" data-gallery="portrait">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('portrait')">&#8249;</button>
+                    <div class="gallery-track" id="track-portrait"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('portrait')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-portrait"></div>
+    </section>
+
+    <section id="halfframe">
+        <div class="section-header">
+            <p class="section-date">date: 2025-2026</p>
+            <h2 class="section-title">HALF-FRAME FRAGMENTS</h2>
+            <p class="section-desc">Shot on Olympus Pen EE-2</p>
+        </div>
+        <div class="gallery-carousel" data-gallery="halfframe">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('halfframe')">&#8249;</button>
+                    <div class="gallery-track" id="track-halfframe"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('halfframe')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-halfframe"></div>
+    </section>
+
+    <section id="waterlight">
+        <div class="section-header">
+            <p class="section-date">date: 2025</p>
+            <h2 class="section-title">WATER LIGHT</h2>
+            <div class="poem">
+                <p>我曾以为，灯塔的意义在于指引远方。</p>
+                <p>直到我带着这个名字开始行走。</p>
+                <p>2025年是我拍胶片的第二年，拍数码的第七年。</p>
+                <p>今年去了很多没去过的地方，看到了很多难忘的风景。</p>
+                <p>拍下了属于我自己沉甸甸的回忆。</p>
+                <p>当我翻看每一张底片的时候都能清晰的记得当时的光线和温度。</p>
+                <p>这本集子，是光在四季里留下的水色。</p>
+                <p>而我的眼睛，是它唯一暂驻的岸。</p>
+                <p class="signature">—— 水色灯塔</p>
+            </div>
+        </div>
+        <div class="gallery-carousel" data-gallery="waterlight">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('waterlight')">&#8249;</button>
+                    <div class="gallery-track" id="track-waterlight"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('waterlight')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-waterlight"></div>
+    </section>
+
+    <section id="calendar">
+        <div class="section-header">
+            <p class="section-date">date: 2026</p>
+            <h2 class="section-title">2026日历</h2>
+        </div>
+        <div class="gallery-carousel" data-gallery="calendar">
+                    <button class="carousel-arrow prev hidden" onclick="carouselPrev('calendar')">&#8249;</button>
+                    <div class="gallery-track" id="track-calendar"></div>
+                    <button class="carousel-arrow next" onclick="carouselNext('calendar')">&#8250;</button>
+                </div>
+                <div class="carousel-dots" id="dots-calendar"></div>
+    </section>
+
+    <footer>
+        <p>© 2025-2026 水色灯塔 // AQUAMARINE BEACON</p>
+        <p>All photographs are taken by 水色灯塔</p>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+        <img id="lightboxImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <button class="back-to-top" id="backToTop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script>
+    (function() {
+        'use strict';
+
+        const galleryData = {
+            uk: [
+                { src: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', caption: 'London', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=800&q=80', caption: 'Oxford' },
+                { src: 'https://images.unsplash.com/photo-1478860409698-8707f313ee8b?w=800&q=80', caption: 'Windermere' },
+                { src: 'https://images.unsplash.com/photo-1535448033526-989cb1d25402?w=800&q=80', caption: 'Glasgow', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506368083636-6defb67639a7?w=800&q=80', caption: 'Scottish Highlands', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1535448033526-989cb1d25402?w=800&q=80', caption: 'Edinburgh' },
+                { src: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=800&q=80', caption: 'London Street' },
+                { src: 'https://images.unsplash.com/photo-1478860409698-8707f313ee8b?w=800&q=80', caption: 'Lake District', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', caption: 'Big Ben' },
+                { src: 'https://images.unsplash.com/photo-1506368083636-6defb67639a7?w=800&q=80', caption: 'Highlands Road' },
+                { src: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=800&q=80', caption: 'Oxford University', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1535448033526-989cb1d25402?w=800&q=80', caption: 'Edinburgh Castle' },
+                { src: 'https://images.unsplash.com/photo-1478860409698-8707f313ee8b?w=800&q=80', caption: 'Windermere Lake', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', caption: 'London Eye' },
+                { src: 'https://images.unsplash.com/photo-1506368083636-6defb67639a7?w=800&q=80', caption: 'Highlands Sheep' },
+            ],
+            hokkaido: [
+                { src: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80', caption: 'Sapporo Snow', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80', caption: 'Otaru Canal', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80', caption: 'Toyako' },
+                { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', caption: 'Hakodate Night View', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80', caption: 'Sapporo Street' },
+                { src: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80', caption: 'Otaru Glass', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80', caption: 'Lake Toya', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', caption: 'Hakodate Morning' },
+                { src: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80', caption: 'Sapporo Tower', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80', caption: 'Otaru Music Box' },
+                { src: 'https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80', caption: 'Mount Usu', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', caption: 'Hakodate Port' },
+            ],
+            kyushu: [
+                { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', caption: 'Fukuoka Temple', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?w=800&q=80', caption: 'Kumamoto Castle', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', caption: 'Aso Volcano' },
+                { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', caption: 'Fukuoka Street', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?w=800&q=80', caption: 'Kumamoto Garden' },
+                { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', caption: 'Aso Green', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', caption: 'Fukuoka Ramen' },
+                { src: 'https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?w=800&q=80', caption: 'Kumamoto Shrine', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', caption: 'Aso Plains', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', caption: 'Fukuoka Bay' },
+                { src: 'https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?w=800&q=80', caption: 'Kumamoto Street' },
+                { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', caption: 'Aso Mountain', size: 'wide' },
+            ],
+            yunnan: [
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Dali Ancient Town', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Lijiang', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Shangri-La' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Yuanyang Terraces', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Erhai Lake', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Jade Dragon Snow Mountain' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Dali Three Pagodas', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Lijiang Old Town', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Shangri-La Prairie' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Terraces Sunrise', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Dali Clouds', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Lijiang Night' },
+                { src: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', caption: 'Shangri-La Temple', size: 'wide' },
+            ],
+            hongkong: [
+                { src: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80', caption: 'Victoria Harbour', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=800&q=80', caption: 'Mong Kok', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80', caption: 'Central' },
+                { src: 'https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=800&q=80', caption: 'Temple Street', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80', caption: 'Star Ferry', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=800&q=80', caption: 'Sai Kung' },
+                { src: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80', caption: 'Peak Tram', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=800&q=80', caption: 'Tsim Sha Tsui', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80', caption: 'Lan Kwai Fong' },
+                { src: 'https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=800&q=80', caption: 'Hong Kong Island', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80', caption: 'Night View', size: 'tall' },
+            ],
+            hangzhou: [
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'West Lake', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Lingyin Temple', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Longjing Tea' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Broken Bridge', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Leifeng Pagoda', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Xixi Wetland' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'West Lake Sunset', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Bamboo Forest', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Hangzhou Street' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Tea Plantation', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'West Lake Boat', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', caption: 'Autumn Leaves' },
+            ],
+            portrait: [
+                { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', caption: 'Portrait 01', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80', caption: 'Portrait 02' },
+                { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', caption: 'Portrait 03', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80', caption: 'Portrait 04', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', caption: 'Portrait 05' },
+                { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80', caption: 'Portrait 06', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', caption: 'Portrait 07', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80', caption: 'Portrait 08' },
+                { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', caption: 'Portrait 09', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80', caption: 'Portrait 10', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', caption: 'Portrait 11' },
+                { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80', caption: 'Portrait 12', size: 'wide' },
+            ],
+            halfframe: [
+                { src: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80', caption: 'Half-frame 01', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80', caption: 'Half-frame 02' },
+                { src: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80', caption: 'Half-frame 03', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80', caption: 'Half-frame 04', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80', caption: 'Half-frame 05' },
+                { src: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80', caption: 'Half-frame 06', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80', caption: 'Half-frame 07', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80', caption: 'Half-frame 08' },
+                { src: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80', caption: 'Half-frame 09', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80', caption: 'Half-frame 10', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80', caption: 'Half-frame 11' },
+                { src: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80', caption: 'Half-frame 12', size: 'wide' },
+            ],
+            waterlight: [
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 01', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 02', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 03' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 04', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 05', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 06' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 07', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 08', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 09' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 10', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 11', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 12' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 13', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'Water Light 14', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'Water Light 15' },
+            ],
+            calendar: [
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'January', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'February' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'March', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'April', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'May' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'June', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'July', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'August' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'September', size: 'wide' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'October', size: 'tall' },
+                { src: 'https://images.unsplash.com/photo-1506905926756-3e3e3e3e3e3e?w=800&q=80', caption: 'November' },
+                { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80', caption: 'December', size: 'wide' },
+            ],
+        };
+
+        // 轮播位置记录
+        const carouselPositions = {};
+        Object.keys(galleryData).forEach(k => carouselPositions[k] = 0);
+
+        function getSlideWidth(key) {
+            const track = document.getElementById('track-' + key);
+            if (!track || !track.children.length) return 340;
+            return track.children[0].offsetWidth + 12;
+        }
+
+        function getVisibleWidth(key) {
+            const carousel = document.querySelector(`[data-gallery="${key}"]`);
+            return carousel ? carousel.offsetWidth : 900;
+        }
+
+        function updateCarousel(key) {
+            const track = document.getElementById('track-' + key);
+            const prevBtn = document.querySelector(`[data-gallery="${key}"] .carousel-arrow.prev`);
+            const nextBtn = document.querySelector(`[data-gallery="${key}"] .carousel-arrow.next`);
+            const dotsContainer = document.getElementById('dots-' + key);
+            if (!track) return;
+
+            const images = galleryData[key];
+            const slideWidth = getSlideWidth(key);
+            const visibleWidth = getVisibleWidth(key);
+            const maxScroll = Math.max(0, (images.length * slideWidth) - visibleWidth);
+
+            let pos = carouselPositions[key] || 0;
+            pos = Math.max(0, Math.min(pos, maxScroll));
+            carouselPositions[key] = pos;
+
+            track.style.transform = `translateX(-${pos}px)`;
+
+            if (prevBtn) prevBtn.classList.toggle('hidden', pos <= 0);
+            if (nextBtn) nextBtn.classList.toggle('hidden', pos >= maxScroll - 5);
+
+            if (dotsContainer) {
+                const currentIndex = Math.round(pos / slideWidth);
+                dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+        }
+
+        window.carouselNext = function(key) {
+            const visibleWidth = getVisibleWidth(key);
+            carouselPositions[key] = (carouselPositions[key] || 0) + visibleWidth * 0.7;
+            updateCarousel(key);
+        };
+
+        window.carouselPrev = function(key) {
+            const visibleWidth = getVisibleWidth(key);
+            carouselPositions[key] = (carouselPositions[key] || 0) - visibleWidth * 0.7;
+            updateCarousel(key);
+        };
+
+        function goToSlide(key, index) {
+            const slideWidth = getSlideWidth(key);
+            carouselPositions[key] = index * slideWidth;
+            updateCarousel(key);
+        }
+
+        // 渲染画廊
+        function initGallery() {
+            document.querySelectorAll('.gallery-carousel').forEach(carousel => {
+                const key = carousel.dataset.gallery;
+                const track = document.getElementById('track-' + key);
+                const dotsContainer = document.getElementById('dots-' + key);
+                const images = galleryData[key];
+                if (!images || !track) return;
+
+                images.forEach((img, i) => {
+                    const item = document.createElement('div');
+                    const orient = img.size === 'wide' ? 'landscape' : 'portrait';
+                    item.className = `gallery-item ${orient} loading`;
+                    item.dataset.index = i;
+                    item.dataset.gallery = key;
+
+                    const image = document.createElement('img');
+                    image.src = img.src;
+                    image.alt = img.caption;
+                    image.loading = 'lazy';
+
+                    image.onload = () => {
+                        image.classList.add('loaded');
+                        item.classList.add('loaded');
+                        item.classList.remove('loading');
+                    };
+
+                    item.appendChild(image);
+                    track.appendChild(item);
+
+                    item.addEventListener('click', () => openLightbox(key, i));
+                });
+
+                // 创建指示器
+                const slideWidth = 340;
+                const visibleWidth = carousel.offsetWidth || 900;
+                const totalPages = Math.ceil((images.length * slideWidth) / visibleWidth);
+                for (let i = 0; i < totalPages; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                    dot.onclick = () => goToSlide(key, i);
+                    dotsContainer.appendChild(dot);
+                }
+            });
+        }
+
+        // 窗口大小改变时重置
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                Object.keys(galleryData).forEach(key => {
+                    carouselPositions[key] = 0;
+                    updateCarousel(key);
+                });
+            }, 200);
+        });
+
+        // 灯箱
+        let currentGallery = null, currentIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+
+        function openLightbox(key, i) {
+            currentGallery = key;
+            currentIndex = i;
+            updateLightbox();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightbox() {
+            const img = galleryData[currentGallery][currentIndex];
+            lightboxImg.src = img.src;
+            lightboxCaption.textContent = img.caption;
+        }
+
+        function nextImage() {
+            const imgs = galleryData[currentGallery];
+            currentIndex = (currentIndex + 1) % imgs.length;
+            updateLightbox();
+        }
+
+        function prevImage() {
+            const imgs = galleryData[currentGallery];
+            currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+            updateLightbox();
+        }
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxNext').addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+        document.getElementById('lightboxPrev').addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+        // 移动端滑动
+        let touchStartX = 0;
+        lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        lightbox.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) diff > 0 ? nextImage() : prevImage();
+        }, { passive: true });
+
+        // 导航
+        const nav = document.getElementById('nav');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        const backToTop = document.getElementById('backToTop');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 滚动效果
+        function handleScroll() {
+            const y = window.scrollY;
+            nav.classList.toggle('scrolled', y > 50);
+            backToTop.classList.toggle('visible', y > 500);
+
+            // 导航高亮
+            document.querySelectorAll('section[id]').forEach(sec => {
+                const top = sec.offsetTop - 100;
+                const bottom = top + sec.offsetHeight;
+                if (y >= top && y < bottom) {
+                    navLinks.querySelectorAll('a').forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === '#' + sec.id);
+                    });
+                }
+            });
+        }
+
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 滚动显现
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section-header, .about-inner, .gallery-item, .poem').forEach((el, i) => {
+            el.classList.add('reveal');
+            el.style.transitionDelay = `${i * 0.03}s`;
+            observer.observe(el);
+        });
+
+        // 初始化
+        initGallery();
+        handleScroll();
+    })();
+    </script>
+</body>
+</html>
