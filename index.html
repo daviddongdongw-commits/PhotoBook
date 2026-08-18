@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>水色灯塔 // AQUAMARINE BEACON</title>
+    <title>我的家庭相册 // MY FAMILY ALBUM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -146,6 +146,40 @@
             text-align: center;
             padding: 120px 48px 80px;
             position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image: url('images/puwai.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.18;
+            filter: grayscale(30%) brightness(1.1);
+            transition: all 0.6s ease;
+            cursor: pointer;
+        }
+
+        .hero-bg:hover {
+            opacity: 0.28;
+            filter: grayscale(10%) brightness(1.05);
+            transform: scale(1.02);
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(245, 243, 240, 0.3) 0%,
+                rgba(245, 243, 240, 0.1) 40%,
+                rgba(245, 243, 240, 0.1) 60%,
+                rgba(245, 243, 240, 0.6) 100%
+            );
+            pointer-events: none;
         }
 
         .hero-title {
@@ -155,6 +189,8 @@
             letter-spacing: 0.15em;
             margin-bottom: 16px;
             color: var(--text);
+            position: relative;
+            z-index: 1;
         }
 
         .hero-subtitle {
@@ -163,6 +199,8 @@
             letter-spacing: 0.3em;
             color: var(--text-muted);
             margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-year {
@@ -170,6 +208,8 @@
             font-weight: 300;
             color: var(--text-light);
             letter-spacing: 0.1em;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-scroll {
@@ -181,6 +221,7 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            z-index: 1;
         }
 
         .hero-scroll span {
@@ -263,7 +304,7 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 0.7fr 1.3fr;
             gap: 80px;
             align-items: center;
         }
@@ -286,7 +327,17 @@
         .about-contact {
             margin-top: 32px;
             padding-top: 24px;
-            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        .about-contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60%;
+            height: 1px;
+            background-color: var(--border);
         }
 
         .about-contact p {
@@ -297,18 +348,32 @@
         .about-image {
             position: relative;
             overflow: hidden;
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
         }
 
-        .about-image img {
+        .about-image-collage {
+            display: flex;
+            gap: 12px;
             width: 100%;
-            height: auto;
+            height: 400px;
+        }
+
+        .about-image-collage img {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            object-fit: cover;
             display: block;
             filter: grayscale(20%);
-            transition: filter 0.6s ease;
+            transition: all 0.6s ease;
+            border-radius: 4px;
         }
 
-        .about-image:hover img {
+        .about-image-collage:hover img {
             filter: grayscale(0%);
+            transform: scale(1.02);
         }
 
         /* ============================================
@@ -707,7 +772,7 @@
 </head>
 <body>
     <nav id="nav">
-        <a href="#" class="nav-brand">水色灯塔</a>
+        <a href="#" class="nav-brand">我的家庭相册</a>
         <ul class="nav-links" id="navLinks">
             <li><a href="#about">关于</a></li>
             <li><a href="#uk">英国</a></li>
@@ -729,9 +794,10 @@
     </nav>
 
     <header class="hero">
-        <h1 class="hero-title">水色灯塔</h1>
-        <p class="hero-subtitle">// AQUAMARINE BEACON</p>
-        <p class="hero-year">'025 — '026</p>
+        <div class="hero-bg"></div>
+        <h1 class="hero-title">我的家庭相册</h1>
+        <p class="hero-subtitle">// MY FAMILY ALBUM</p>
+       
         <div class="hero-scroll">
             <span>向下滚动</span>
             <div class="hero-scroll-line"></div>
@@ -742,17 +808,22 @@
         <div class="about-inner">
             <div class="about-text">
                 <p class="section-date">date: PROFILE</p>
-                <h3>水色灯塔</h3>
-                <p>2001年生，现居上海</p>
-                <p>华东师范大学设计专业</p>
-                <p>兼职摄影师 / 胶片爱好者</p>
+                <h3>我的家庭相册</h3>
+                <p>2002年定居上海</p>
+                <p>爸爸：David</p>
+                <p>妈妈：Delphine</p>
+                <p>女儿：Olivia</p>
                 <div class="about-contact">
-                    <p>联系我：826025391@qq.com</p>
-                    <p>WECHAT: summerclearsky</p>
+                    <p>联系我：david_dongw@hotmail.com</p>
+                    <p>WECHAT: david_dongw</p>
                 </div>
             </div>
             <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop&crop=face&q=80" alt="摄影师" loading="lazy">
+                <div class="about-image-collage">
+                    <img src="images/F1.jpg" alt="家庭照片1" loading="lazy">
+                    <img src="images/F2.jpg" alt="家庭照片2" loading="lazy">
+                    <img src="images/F3.jpg" alt="家庭照片3" loading="lazy">
+                </div>
             </div>
         </div>
     </section>
@@ -884,7 +955,7 @@
                 <p>当我翻看每一张底片的时候都能清晰的记得当时的光线和温度。</p>
                 <p>这本集子，是光在四季里留下的水色。</p>
                 <p>而我的眼睛，是它唯一暂驻的岸。</p>
-                <p class="signature">—— 水色灯塔</p>
+                <p class="signature">—— 我的家庭相册</p>
             </div>
         </div>
         <div class="gallery-carousel" data-gallery="waterlight">
@@ -909,8 +980,8 @@
     </section>
 
     <footer>
-        <p>© 2025-2026 水色灯塔 // AQUAMARINE BEACON</p>
-        <p>All photographs are taken by 水色灯塔</p>
+        <p>© 2025-2026 我的家庭相册 // MY FAMILY ALBUM</p>
+        <p>All photographs are taken by 我的家庭相册</p>
     </footer>
 
     <div class="lightbox" id="lightbox">
@@ -933,7 +1004,14 @@
 
         const galleryData = {
             uk: [
-                { src: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', caption: 'London', size: 'wide' },
+	{ src: 'images/shanghai/1.jpg',size: 'wide' },
+	{ src: 'images/shanghai/2.jpg' },
+	{ src: 'images/shanghai/3.jpg' },
+	{ src: 'images/shanghai/4.jpg',size: 'wide'  },
+	{ src: 'images/shanghai/5.jpg' },
+	{ src: 'images/shanghai/6.jpg',size: 'wide'  },
+	{ src: 'images/shanghai/7.jpg' },
+                /*{ src: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', caption: 'London', size: 'wide' },
                 { src: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=800&q=80', caption: 'Oxford' },
                 { src: 'https://images.unsplash.com/photo-1478860409698-8707f313ee8b?w=800&q=80', caption: 'Windermere' },
                 { src: 'https://images.unsplash.com/photo-1535448033526-989cb1d25402?w=800&q=80', caption: 'Glasgow', size: 'tall' },
@@ -947,7 +1025,7 @@
                 { src: 'https://images.unsplash.com/photo-1535448033526-989cb1d25402?w=800&q=80', caption: 'Edinburgh Castle' },
                 { src: 'https://images.unsplash.com/photo-1478860409698-8707f313ee8b?w=800&q=80', caption: 'Windermere Lake', size: 'tall' },
                 { src: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', caption: 'London Eye' },
-                { src: 'https://images.unsplash.com/photo-1506368083636-6defb67639a7?w=800&q=80', caption: 'Highlands Sheep' },
+                { src: 'https://images.unsplash.com/photo-1506368083636-6defb67639a7?w=800&q=80', caption: 'Highlands Sheep' },*/
             ],
             hokkaido: [
                 { src: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80', caption: 'Sapporo Snow', size: 'wide' },
@@ -1321,6 +1399,11 @@
             el.classList.add('reveal');
             el.style.transitionDelay = `${i * 0.03}s`;
             observer.observe(el);
+        });
+
+        // 首页背景点击滚动到关于
+        document.querySelector('.hero-bg').addEventListener('click', () => {
+            document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
         });
 
         // 初始化
